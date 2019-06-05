@@ -3,21 +3,26 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 # Import both data tables into python using pandas. Set the index column to "MESS_DATUM" and parse the column values as dates. [1P]
-garmisch  = 
-zugspitze = 
+garmisch  = pd.read_csv("./data/produkt_klima_tag_20171010_20190412_01550.txt", parse_dates = ["MESS_DATUM"],
+                      index_col = "MESS_DATUM", sep = ";", na_values = "")
+zugspitze = pd.read_csv("./data/produkt_klima_tag_20171010_20190412_05792.txt", parse_dates = ["MESS_DATUM"],
+                      index_col = "MESS_DATUM", sep = ";", na_values = "")
 
 # Clip the tables to the year 2018: [1P]
-garmisch  = 
-zugspitze = 
+garmisch  = garmisch.loc["2018"]
+zugspitze = zugspitze.loc["2018"]
 
 # Resample the temperature data to monthly averages (" TMK") and the precipitation data to monthly sums (" RSK"): [1P]
-garmisch_agg  = 
-zugspitze_agg = 
+garmisch_agg  = garmisch.loc[:, [" TMK", " RSK"]].resample("M").agg({" TMK": "mean", " RSK": "sum"})
+zugspitze_agg = zugspitze.loc[:, [" TMK", " RSK"]].resample("M").agg({" TMK": "mean", " RSK": "sum"})
 
 # Define a plotting function that draws a simple climate diagram
 # Add the arguments as mentioned in the docstring below [1P]
 # Set the default temperature range from -15°C to 20°C and the precipitation range from 0mm to 370mm [1P]
-def create_climate_diagram(...):
+plt.hist(tabelle.air_temperature.dropna())
+plt.show()
+
+def create_climate_diagram(temp, pp,):
     """
     Draw a climate diagram.
     
@@ -49,7 +54,7 @@ def create_climate_diagram(...):
     """
 
     fig = plt.figure(figsize=(10,8))
-    plt.rcParams['font.size'] = 16
+    plt.rcParams["font.size"] = 16
 
     ax2 = fig.add_subplot(111)
     ax1 = ax2.twinx()
