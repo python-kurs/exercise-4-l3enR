@@ -17,69 +17,6 @@ zugspitze = zugspitze.loc["2018"]
 garmisch_agg  = garmisch.loc[:, [" TMK", " RSK"]].resample("M").agg({" TMK": "mean", " RSK": "sum"})
 zugspitze_agg = zugspitze.loc[:, [" TMK", " RSK"]].resample("M").agg({" TMK": "mean", " RSK": "sum"})
 
-###########################################################
-##1 PLOT TEMPERATURE---------------------------------------
-temperatur = garmisch_agg[" TMK"]
-
-plt.plot(temperatur, color = "r")
-plt.xlabel("Time")
-plt.ylabel("Temperature (°C)")
-
-##2 PLOT PRECIPITATION-------------------------------------
-#using a bar chart
-
-position = garmisch_agg.index
-niederschlag = garmisch_agg[" RSK"]
-
-plt.bar(position, niederschlag, width = 20, color = "b") 
-plt.xlabel("Time")
-plt.ylabel("Precipitation (mm)")
-
-##3 COMBINE THE PLOTS
-fig = plt.figure(figsize = (8,5))
-
-position = garmisch_agg.index
-
-ax2 = fig.add_subplot(111)
-ax1 = ax2.twinx()
-
-ax1.plot(temperatur, color = "r")
-ax2.bar(x = position, height = niederschlag, width = 25, color = "b")
-
-##4 MONTH AS NAMES--------------------------------------
-fig = plt.figure(figsize = (8,5))
-position = garmisch_agg.index
-
-ax2 = fig.add_subplot(111)
-ax1 = ax2.twinx()
-
-ax1.plot(garmisch_agg[" TMK"], color = "r")
-ax2.bar(x = position, height = garmisch_agg[" RSK"], width = 25, color = "b")
-
-monthNames = mdates.DateFormatter("%b")
-ax1.xaxis.set_major_formatter(monthNames)
-##5 FORMATTING Y AXIS-----------------------------------
-fig = plt.figure(figsize = (8,5))
-position = garmisch_agg.index
-
-ax2 = fig.add_subplot(111)
-ax1 = ax2.twinx()
-
-ax1.plot(garmisch_agg[" TMK"], color = "r")
-ax2.bar(x = garmisch_agg.index, height = garmisch_agg[" RSK"], width = 25, color = "b")
-
-
-
-month = mdates.DayLocator(bymonthday = 28)
-monthNames = mdates.DateFormatter("%b")
-
-ax1.xaxis.set_major_locator(month)
-ax1.xaxis.set_major_formatter(monthNames)
-ax2.xaxis.set_major_locator(month)
-ax2.xaxis.set_major_formatter(monthNames)
-
-###########################################################
-
 # Define a plotting function that draws a simple climate diagram
 # Add the arguments as mentioned in the docstring below [1P]
 # Set the default temperature range from -15°C to 20°C and the precipitation range from 0mm to 370mm [1P]
